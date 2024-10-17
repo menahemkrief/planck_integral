@@ -1,7 +1,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
-#include "../planck_integral/planck_integral.hpp"
+#include "planck_integral.hpp"
 
 namespace planck_integral {
     void bind_planck_integral(pybind11::module& m){
