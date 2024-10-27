@@ -25,7 +25,7 @@ inline double Clark_Taylor(double const x){
 
 // // For N=21 terms, x=1 is a good stitching point giving accuracy better than ~1e-10 for all x. (see Clark 1987 Fig. 3). However, it is substantially slower. 
 // static int constexpr N_clark = 21;
-// static double constexpr x_clark = 2.;
+// static double constexpr x_clark = 1.;
 
 // For N=5 terms, x=2 is a good stitching point giving accuracy better than ~1e-5 for all x. (see Clark 1987 Fig. 3)
 static int constexpr N_clark = 5;
