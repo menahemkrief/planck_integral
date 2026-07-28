@@ -90,6 +90,33 @@ inline double planck_energy_density_group_integral(double const E_low, double co
     return units::arad * pow<4>(T) * planck_integral(a, b);
 }
 
+inline double x4_over_exm1(double const x) {
+    if (x > 500.0) return 0.0;
+    return x * x * x * x / std::expm1(x);
+}
+
+/**
+ * @brief Analytical dB_g/dT [erg/cm^3/K] for an energy group.
+ *
+ * Uses Leibniz's rule on B_g = arad*T^4 * PI(a,b):
+ *   dB_g/dT = arad*T^3 * [4*PI(a,b) + (15/pi^4)*(a^4/(e^a-1) - b^4/(e^b-1))]
+ */
+inline double planck_energy_density_dBdT_group(double const E_low, double const E_high, double const T) {
+    using boost::math::pow;
+    assert(E_low < E_high);
+
+    if(T < 1e50*std::numeric_limits<double>::min()){
+        return 0.0;
+    }
+
+    double const kT = units::k_boltz * T;
+    double const a = E_low / kT;
+    double const b = E_high / kT;
+    static double constexpr coeff = 15.0 / pow<4>(M_PI);
+    double const boundary_term = coeff * (x4_over_exm1(a) - x4_over_exm1(b));
+    return units::arad * pow<3>(T) * (4.0 * planck_integral(a, b) + boundary_term);
+}
+
 } // namespace planck_integral
 
 #endif //PLANK_INTEGRAL_HPP
