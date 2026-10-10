@@ -91,8 +91,10 @@ inline double planck_energy_density_group_integral(double const E_low, double co
 }
 
 inline double x4_over_exm1(double const x) {
-    if (x > 500.0) return 0.0;
-    return x * x * x * x / std::expm1(x);
+    // No cutoff at large x: the edge term is comparable to the group integral
+    // there, and x^4 e^{-x} underflows to 0 on its own near x = 745.
+    if (x < 1e-8) return x * x * x;
+    return x * x * x * x * std::exp(-x) / -std::expm1(-x);
 }
 
 /**
